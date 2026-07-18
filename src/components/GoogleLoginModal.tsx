@@ -135,6 +135,7 @@ export default function GoogleLoginModal({
                     <input
                       type="email"
                       required
+                      aria-label="Custom Google Email Address"
                       placeholder="Enter other google email..."
                       value={customEmail}
                       onChange={(e) => setCustomEmail(e.target.value)}

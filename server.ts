@@ -13,6 +13,19 @@ const PORT = 3000;
 
 app.use(express.json());
 
+// Defensive HTTP Security Headers Middleware
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.github.com https://aistudio.google.com;"
+  );
+  next();
+});
+
 // Lazy-loaded Gemini client to prevent startup crash if GEMINI_API_KEY is not defined
 let aiClient: GoogleGenAI | null = null;
 
@@ -96,7 +109,9 @@ app.post("/api/gemini/analyze", async (req, res) => {
   } catch (error: any) {
     console.error("Gemini analyze error:", error);
     res.status(500).json({
-      error: error.message || "Could not complete AI analysis. Make sure GEMINI_API_KEY is configured."
+      error: process.env.NODE_ENV === "production"
+        ? "Could not complete AI analysis. Make sure GEMINI_API_KEY is configured in Settings."
+        : (error.message || "Could not complete AI analysis.")
     });
   }
 });
@@ -140,7 +155,9 @@ app.post("/api/gemini/chat", async (req, res) => {
   } catch (error: any) {
     console.error("Gemini chat error:", error);
     res.status(500).json({
-      error: error.message || "Could not complete chat session. Make sure GEMINI_API_KEY is configured in Settings."
+      error: process.env.NODE_ENV === "production"
+        ? "Could not complete chat session. Make sure GEMINI_API_KEY is configured in Settings."
+        : (error.message || "Could not complete chat session.")
     });
   }
 });

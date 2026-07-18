@@ -175,10 +175,11 @@ export default function DesktopSettings() {
 
               <div className="space-y-4 pt-1">
                 <div className="space-y-1">
-                  <label className="text-[11px] text-zinc-400 block font-medium">
+                  <label htmlFor="gemini-key" className="text-[11px] text-zinc-400 block font-medium">
                     Google Gemini API Key
                   </label>
                   <input
+                    id="gemini-key"
                     type="password"
                     placeholder="Enter GEMINI_API_KEY for continuous diagnostics"
                     value={apiKey}
@@ -189,10 +190,11 @@ export default function DesktopSettings() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[11px] text-zinc-400 block font-medium">
+                    <label htmlFor="firebase-proj" className="text-[11px] text-zinc-400 block font-medium">
                       Firebase Project Name
                     </label>
                     <input
+                      id="firebase-proj"
                       type="text"
                       placeholder="e.g. deasy-sync-prod"
                       value={firebaseProject}
@@ -201,10 +203,11 @@ export default function DesktopSettings() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[11px] text-zinc-400 block font-medium">
+                    <label htmlFor="db-region" className="text-[11px] text-zinc-400 block font-medium">
                       Default Database Region
                     </label>
                     <input
+                      id="db-region"
                       type="text"
                       placeholder="e.g. europe-west3"
                       value={dbRegion}

@@ -17,12 +17,18 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/LIN4CRE/Deasy/releases"><img src="https://img.shields.io/github/v/release/LIN4CRE/Deasy?color=6366f1&logo=github&style=flat-square" alt="GitHub Release" /></a>
+  <a href="https://github.com/DLinacre/Deasy/releases"><img src="https://img.shields.io/github/v/release/DLinacre/Deasy?color=6366f1&logo=github&style=flat-square" alt="GitHub Release" /></a>
   <a href="https://www.electronjs.org/"><img src="https://img.shields.io/badge/desktop-electron%20v30.0.0-indigo?logo=electron&style=flat-square" alt="Desktop Runtime" /></a>
-  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/node-%3E%3D20.0.0-emerald?logo=node.js&style=flat-square" alt="Node Runtime" /></a>
+  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/node-%3E%3D22.0.0-emerald?logo=node.js&style=flat-square" alt="Node Runtime" /></a>
   <a href="https://vite.dev/"><img src="https://img.shields.io/badge/bundler-vite%20v6-cyan?logo=vite&style=flat-square" alt="Vite Bundler" /></a>
   <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/styling-tailwind%20v4-blueviolet?logo=tailwindcss&style=flat-square" alt="Tailwind CSS" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-yellow?style=flat-square" alt="License" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/DLinacre/Deasy/releases">
+    <img src="https://img.shields.io/badge/⬇️%20Download%20Deasy%20for%20Windows%2011-Indigo?style=for-the-badge&logo=windows&logoColor=white" alt="Download Deasy for Windows 11" />
+  </a>
 </p>
 
 ---

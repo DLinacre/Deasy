@@ -257,14 +257,14 @@ export default function App() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-base font-bold text-white tracking-tight font-display">
-                  Arena.ai Deploy Console
+                  Deasy by Linacre
                 </h1>
                 <span className="px-2 py-0.5 text-[9px] font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 rounded-full">
-                  v1.0.0
+                  v1.1.0
                 </span>
               </div>
               <p className="text-xs text-zinc-400 mt-0.5 font-sans">
-                Unified Deployment & Branch Testing Hub (http://arena.ai/agents)
+                Continuous Command Suite & Branch Desktop Manager (www.Linacre.site)
               </p>
             </div>
           </div>
@@ -460,8 +460,8 @@ export default function App() {
           </div>
         </div>
 
-        {/* Dynamic Nav Tabs */}
-        <nav className="glass-panel p-1 rounded-2xl flex flex-wrap gap-1 shadow-lg" id="console-tabs-navigation">
+        {/* Dynamic Nav Tabs - Scrollable on mobile & tablet viewports */}
+        <nav className="glass-panel p-1 rounded-2xl flex overflow-x-auto scrollbar-none snap-x lg:flex-wrap gap-1 shadow-lg" id="console-tabs-navigation">
           <button
             onClick={() => setActiveTab("workspaces")}
             className={`flex-1 min-w-[100px] py-2.5 px-3 text-xs font-semibold rounded-xl transition flex items-center justify-center gap-2 ${
