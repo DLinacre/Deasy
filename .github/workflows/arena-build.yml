@@ -86,7 +86,7 @@ jobs:
       - name: Bootstrap Mobile Platform Bridge
         run: |
           pnpm add @capacitor/core @capacitor/cli @capacitor/android
-          pnpm exec cap init "Arena Deploy Console" "ai.arena.agents" --web-dir=dist --welcome=false
+          pnpm exec cap init "Arena Deploy Console" "ai.arena.agents" --web-dir=dist
           pnpm exec cap add android
 
       - name: Sync Web Bundle with Android Studio Gradle Wrapper
