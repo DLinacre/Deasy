@@ -45,6 +45,7 @@ jobs:
         with:
           name: arena-web-dist
           path: dist/
+          retention-days: 1
 
   build-android:
     name: Build Android APK (Arena.apk)
@@ -109,6 +110,7 @@ jobs:
         with:
           name: Arena-Debug-APK
           path: release-output/Arena.apk
+          retention-days: 1
 
   publish-release:
     name: Auto-Generate GitHub Tag Release
