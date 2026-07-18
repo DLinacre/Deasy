@@ -1,0 +1,8 @@
+{
+  "name": "Arena.ai Mobile Deploy Console",
+  "description": "A dark glassy command console for Arena.ai projects and Deasy desktop packages featuring seamless GitHub sync, branch testing pipelines, secure Google Sign-In with auto-synchronized encrypted database backups, live performance monitoring graphs, and an interactive Windows 11 Desktop suite for zero-terminal Setup.exe packaging and system tray operation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "appId": "com.linacre.deasy",
+  "productName": "Deasy",
+  "copyright": "Copyright © 2026 Linacre site (www.Linacre.site/projects)",
+  "directories": {
+    "output": "dist/installers"
+  },
+  "files": [
+    "dist/**/*",
+    "desktop-main.cjs",
+    "assets/**/*",
+    "package.json",
+    "firebase-applet-config.json"
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "icon": "assets/icon.ico"
+  },
+  "nsis": {
+    "oneClick": true,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": false,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Deasy",
+    "runAfterFinish": true,
+    "installerIcon": "assets/icon.ico",
+    "uninstallerIcon": "assets/icon.ico"
+  }
+}
