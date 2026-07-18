@@ -36,12 +36,13 @@ function startLocalBackend() {
   const env = {
     ...process.env,
     NODE_ENV: 'production',
-    PORT: PORT.toString()
+    PORT: PORT.toString(),
+    ELECTRON_RUN_AS_NODE: '1'
   };
 
   try {
-    // Start backend server silently (no console popping up)
-    backendProcess = spawn('node', [backendPath], {
+    // Start backend server silently using Electron's own bundled runtime
+    backendProcess = spawn(process.execPath, [backendPath], {
       env: env,
       cwd: __dirname,
       stdio: 'pipe'
