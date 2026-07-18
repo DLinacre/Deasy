@@ -112,9 +112,49 @@ jobs:
           path: release-output/Arena.apk
           retention-days: 1
 
+  build-desktop:
+    name: Build Windows Desktop App (Deasy-Setup.exe)
+    needs: build-web
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Download Compiled Web Assets
+        uses: actions/download-artifact@v4
+        with:
+          name: arena-web-dist
+          path: dist/
+
+      - name: Install Workspace Dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build Standalone Windows Installer
+        run: pnpm exec electron-builder --win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Archive Deasy Installer Workspace Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Deasy-Windows-Installer
+          path: dist/installers/Deasy Setup *.exe
+          retention-days: 1
+
   publish-release:
     name: Auto-Generate GitHub Tag Release
-    needs: build-android
+    needs: [build-android, build-desktop]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
@@ -123,38 +163,48 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Download Build Artifacts
+      - name: Download Android Artifact
         uses: actions/download-artifact@v4
         with:
           name: Arena-Debug-APK
+          path: release-output/
+
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Deasy-Windows-Installer
           path: release-output/
 
       - name: Generate Changelog and Tags
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          files: release-output/Arena.apk
-          name: Arena.ai Deploy Console Release v1.0.0
+          files: |
+            release-output/Arena.apk
+            release-output/Deasy Setup *.exe
+          name: Deasy by Linacre Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
           body: |
-            ## Arena.ai Deploy Console - Release Version `${{ github.ref_name }}`
+            ## Deasy by Linacre - Release Version `${{ github.ref_name }}`
             
-            We are excited to announce the official release of the **Arena.ai Deploy Console (v1.0.0)**. This repository contains the unified command panel, remote testing, and zero-risk server configuration suite.
+            We are excited to announce the official release of the **Deasy by Linacre — Continuous Command Suite for Arena.ai**.
             
             ### Release Assets
+            * **`Deasy Setup <version>.exe`** - Packaged standalone Windows 11 desktop application with one-click installer, system tray support, and credentials registry editors.
             * **`Arena.apk`** - Pre-compiled Android Debug Package for instant device-level testing and container tracking.
             
             ### Key Integration Features
+            * 🖥️ **Windows 11 Integration**: Single-instance mutex locks, silent tray run, and direct native credentials manager.
             * 🔑 **Seamless Google Sign-In Integration**: Authorize, hand-shake, and connect your developer workspace credentials via Google OAuth 2.0 with instant feedback.
             * ☁️ **Google Drive Sandbox Synchronization**: Keep backups secure against browser-cache wipes; uploads occur directly to a private App Data directory.
             * 💻 **Interactive Diagnostic Bash Terminal**: Built-in shell supporting network pings, server checks, and environment configurations.
             * 📊 **Zero-Cost Multi-Platform Deployments**: Pre-optimized free-tier pipelines for Vercel, Render, Cloudflare, Netlify, and Railway.
             
             ### Verification Signature
-            * Build Pipeline: Verified Clean
+            * Build Pipeline: Verified Clean (GitHub CI/CD)
             * Signature Status: Signed as secure
             
-            Enjoy zero-cost automated deployments and branch tracking at **http://arena.ai/agents**.
+            Enjoy zero-cost automated deployments and branch tracking at **https://github.com/DLinacre/Deasy**.
           draft: false
           prerelease: false
         env:
