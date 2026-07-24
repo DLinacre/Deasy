@@ -1,8 +1,4 @@
 <p align="center">
-  <img src="assets/banner.png" alt="Deasy Banner" width="100%" />
-</p>
-
-<p align="center">
   <img src="assets/logo.png" alt="Deasy Logo" width="120" height="120" />
 </p>
 
