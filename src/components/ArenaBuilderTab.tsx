@@ -421,7 +421,7 @@ For each active category:
                 <label className="block text-xs font-semibold text-slate-400 mb-2">
                   Audit Categories ({selectedCategories.length}/{AUDIT_CATEGORIES.length})
                 </label>
-                <div className="max-h-48 overflow-y-auto space-y-1.5 pr-1">
+                <div className="space-y-1.5 pr-1">
                   {AUDIT_CATEGORIES.map((cat) => {
                     const isSelected = selectedCategories.includes(cat);
                     return (
@@ -448,7 +448,7 @@ For each active category:
                 <label className="block text-xs font-semibold text-slate-400 mb-2">
                   Expert Auditor Roles ({selectedRoles.length}/{EXPERT_ROLES.length})
                 </label>
-                <div className="max-h-48 overflow-y-auto space-y-1.5 pr-1">
+                <div className="space-y-1.5 pr-1">
                   {EXPERT_ROLES.map((role) => {
                     const isSelected = selectedRoles.includes(role);
                     return (

@@ -94,7 +94,7 @@
 }
 
 /* ==========================================================================
-   Landscape & Short-Height Viewport Fixes (Prevent Overlapping & Unscrollable Boxes)
+   Full Unclipped Layout Rules for Left Side Parameter Boxes
    ========================================================================== */
 @media (max-height: 760px), (orientation: landscape) and (max-height: 600px) {
   body {
@@ -110,15 +110,5 @@
   .lg\:col-span-5, .lg\:col-span-7, .lg\:col-span-12 {
     width: 100% !important;
     max-width: 100% !important;
-  }
-
-  .overflow-hidden {
-    overflow: visible !important;
-  }
-
-  .max-h-48, .max-h-64, .max-h-96 {
-    max-height: 220px !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
   }
 }
