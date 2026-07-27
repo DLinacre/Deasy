@@ -3,6 +3,7 @@ import {
   Sparkles,
   Search,
   Rocket,
+  Zap,
   Copy,
   Check,
   Download,
@@ -49,7 +50,7 @@ const EXPERT_ROLES = [
 ];
 
 export default function ArenaBuilderTab() {
-  const [mode, setMode] = useState<"audit" | "create">("create");
+  const [mode, setMode] = useState<"audit" | "create" | "refactor">("create");
   const [copied, setCopied] = useState(false);
 
   // App Creation Form State
@@ -63,6 +64,13 @@ export default function ArenaBuilderTab() {
     "- Real-time OS CPU/RAM Monitoring\n- WinCrypt Hardware Secrets Binding\n- Google Drive AES-256 Encrypted Backups\n- GitHub Actions Branch CI/CD Generator\n- Gemini AI Co-Pilot Diagnostics"
   );
   const [targetAudience, setTargetAudience] = useState("Release Managers, DevOps Engineers, and Power Developers");
+
+  // Refactor & Modernize Form State
+  const [refactorScope, setRefactorScope] = useState("Deasy Core Platform & Express Server");
+  const [refactorTechDebt, setRefactorTechDebt] = useState(
+    "Circular bundle chunks in Vite build, unhandled promise rejections in legacy async handlers, missing TypeScript strict type definitions, and outdated vendor CSS prefixes."
+  );
+  const [refactorTargetStack, setRefactorTargetStack] = useState("React 19 + TypeScript + Tailwind CSS v4 + Vitest + Clean Modular Architecture");
 
   // Audit Form State
   const [auditTargetTitle, setAuditTargetTitle] = useState("Deasy Platform");
@@ -123,6 +131,29 @@ ${coreFeatures}
 2. Implement core components, services, and platform bridges according to this specification.
 3. Validate build with \`pnpm run build\` and ensure zero diagnostic warnings.
 4. Provide a clear summary of all implemented features.`;
+    } else if (mode === "refactor") {
+      return `SYSTEM DIRECTIVE: ARENA AGENT MODE — REFACTORING & CODE MODERNIZATION SPECIFICATION
+
+# ⚡ REFACTORING & CODE MODERNIZATION DIRECTIVE: ${refactorScope.toUpperCase() || "TARGET MODULE"}
+
+## 1. TARGET REFACTORING SCOPE
+- Component / Module: ${refactorScope}
+- Desired Architecture & Stack: ${refactorTargetStack}
+
+## 2. IDENTIFIED TECHNICAL DEBT & PAIN POINTS
+${refactorTechDebt || "Legacy code debt, unhandled errors, and code smells."}
+
+## 3. REFACTORING OBJECTIVES
+- **Modernize Architecture:** Upgrade legacy paradigms to clean ${refactorTargetStack}.
+- **Preserve Existing Contracts:** Guarantee zero breaking changes to public APIs, component props, or function signatures.
+- **Eliminate Anti-Patterns:** Fix memory leaks, circular dependencies, swallowed exceptions, and unhandled promise rejections.
+- **Performance & Type Safety:** Enforce strict TypeScript typing and optimize execution performance.
+
+## 4. EXECUTION STEPS FOR AI AGENT
+1. Map module dependencies and isolate side-effects before mutating code.
+2. Define explicit TypeScript interfaces and contracts.
+3. Refactor target components incrementally.
+4. Run \`pnpm run build\` and verify zero regressions.`;
     } else {
       return `SYSTEM DIRECTIVE: ARENA AGENT MODE — MULTI-EXPERT PRODUCT AUDIT & IMPROVEMENT SPECIFICATION
 
@@ -242,6 +273,17 @@ For each active category:
             <Search className="w-4 h-4" />
             🔍 Audit Existing
           </button>
+          <button
+            onClick={() => setMode("refactor")}
+            className={`px-4 py-2 rounded-lg font-semibold text-xs transition-all flex items-center gap-2 ${
+              mode === "refactor"
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            <Zap className="w-4 h-4" />
+            ⚡ Refactor
+          </button>
         </div>
       </div>
 
@@ -306,6 +348,45 @@ For each active category:
                   onChange={(e) => setCoreFeatures(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all font-mono text-xs"
                   placeholder="- Feature 1..."
+                />
+              </div>
+            </div>
+          ) : mode === "refactor" ? (
+            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4 backdrop-blur-xl">
+              <h3 className="text-sm font-semibold text-indigo-300 uppercase tracking-wider flex items-center gap-2">
+                <Zap className="w-4 h-4" /> Refactor & Modernize Scope
+              </h3>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">Target Scope / Module</label>
+                <input
+                  type="text"
+                  value={refactorScope}
+                  onChange={(e) => setRefactorScope(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all"
+                  placeholder="e.g. Deasy Core Platform & Express Server"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">Current Tech Debt & Pain Points</label>
+                <textarea
+                  rows={4}
+                  value={refactorTechDebt}
+                  onChange={(e) => setRefactorTechDebt(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all text-xs"
+                  placeholder="Describe memory leaks, unhandled errors, circular dependencies..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">Desired Target Stack & Architecture</label>
+                <input
+                  type="text"
+                  value={refactorTargetStack}
+                  onChange={(e) => setRefactorTargetStack(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all"
+                  placeholder="e.g. React 19 + TypeScript + Tailwind CSS v4 + Vitest"
                 />
               </div>
             </div>
