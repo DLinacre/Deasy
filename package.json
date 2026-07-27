@@ -39,5 +39,22 @@
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.3"
+  },
+  "build": {
+    "appId": "site.linacre.deasy",
+    "productName": "Deasy",
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "files": [
+      "dist/**/*",
+      "desktop-main.cjs",
+      "preload.js",
+      "assets/**/*",
+      "package.json"
+    ]
   }
 }

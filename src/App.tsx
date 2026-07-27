@@ -38,6 +38,7 @@ import GoogleLoginModal from "./components/GoogleLoginModal";
 import TasksChatSync from "./components/TasksChatSync";
 import GeminiCopilotConsole from "./components/GeminiCopilotConsole";
 import DesktopSettings from "./components/DesktopSettings";
+import ArenaBuilderTab from "./components/ArenaBuilderTab";
 
 type TabId =
   | "workspaces"
@@ -48,7 +49,8 @@ type TabId =
   | "budget"
   | "tasks_chat"
   | "gemini_copilot"
-  | "desktop";
+  | "desktop"
+  | "arena_builder";
 
 export default function App() {
   // State load / persistence from LocalStorage
@@ -559,6 +561,18 @@ export default function App() {
           </button>
 
           <button
+            onClick={() => setActiveTab("arena_builder")}
+            className={`flex-1 min-w-[100px] py-2.5 px-3 text-xs font-semibold rounded-xl transition flex items-center justify-center gap-2 ${
+              activeTab === "arena_builder"
+                ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 border-t border-white/10"
+                : "text-zinc-400 hover:text-white"
+            }`}
+          >
+            <Sparkles className="h-3.5 w-3.5 text-indigo-300" />
+            <span>Arena Builder</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab("desktop")}
             className={`flex-1 min-w-[100px] py-2.5 px-3 text-xs font-semibold rounded-xl transition flex items-center justify-center gap-2 ${
               activeTab === "desktop"
@@ -621,6 +635,10 @@ export default function App() {
 
           {activeTab === "gemini_copilot" && (
             <GeminiCopilotConsole activeProject={activeProject} />
+          )}
+
+          {activeTab === "arena_builder" && (
+            <ArenaBuilderTab />
           )}
 
           {activeTab === "desktop" && (
