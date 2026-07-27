@@ -6,14 +6,11 @@ import {
   Copy,
   Check,
   Download,
-  ShieldCheck,
-  Layers,
-  FileCode,
-  Users,
   Terminal,
   Cpu,
   RefreshCw,
-  ExternalLink,
+  Bot,
+  AlertTriangle,
 } from "lucide-react";
 
 const AUDIT_CATEGORIES = [
@@ -72,6 +69,11 @@ export default function ArenaBuilderTab() {
   const [auditTargetUrl, setAuditTargetUrl] = useState("https://github.com/DLinacre/Deasy");
   const [selectedCategories, setSelectedCategories] = useState<string[]>(AUDIT_CATEGORIES);
   const [selectedRoles, setSelectedRoles] = useState<string[]>(EXPERT_ROLES.slice(0, 6));
+
+  // Gemini Analysis State
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiResult, setAiResult] = useState<string | null>(null);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   const toggleCategory = (cat: string) => {
     setSelectedCategories((prev) =>
@@ -161,6 +163,37 @@ For each active category:
     a.download = `${mode === "create" ? "app-builder-spec" : "audit-brief"}.md`;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handleAnalyzeWithGemini = async () => {
+    setAiLoading(true);
+    setAiError(null);
+    setAiResult(null);
+
+    try {
+      const res = await fetch("/api/gemini/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          logType: "architecture",
+          logText: currentPrompt,
+          branch: "main",
+          repo: auditTargetTitle,
+          targetPlatform: targetPlatform,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: Failed to analyze prompt with Gemini API`);
+      }
+
+      const data = await res.json();
+      setAiResult(data.advice || data.explanation || JSON.stringify(data, null, 2));
+    } catch (err: any) {
+      setAiError(err.message || "Failed to analyze prompt with Gemini AI server.");
+    } finally {
+      setAiLoading(false);
+    }
   };
 
   return (
@@ -361,7 +394,7 @@ For each active category:
 
         {/* Live Generated Prompt Output */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden flex flex-col h-full">
+          <div className="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden flex flex-col">
             {/* Output Toolbar */}
             <div className="bg-slate-900/90 px-5 py-3 border-b border-slate-800 flex items-center justify-between gap-2 flex-wrap">
               <div className="flex items-center gap-2">
@@ -375,6 +408,15 @@ For each active category:
               </div>
 
               <div className="flex items-center gap-2">
+                <button
+                  onClick={handleAnalyzeWithGemini}
+                  disabled={aiLoading}
+                  className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-semibold transition-all flex items-center gap-1.5 shadow-lg shadow-purple-500/20 disabled:opacity-50"
+                >
+                  <Bot className={`w-3.5 h-3.5 ${aiLoading ? "animate-spin" : ""}`} />
+                  {aiLoading ? "Analyzing..." : "Analyze with Gemini AI"}
+                </button>
+
                 <button
                   onClick={handleDownload}
                   className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-all flex items-center gap-1.5"
@@ -397,10 +439,38 @@ For each active category:
             </div>
 
             {/* Markdown Display Box */}
-            <div className="p-5 font-mono text-xs text-slate-300 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[600px] overflow-y-auto bg-slate-950">
+            <div className="p-5 font-mono text-xs text-slate-300 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[500px] overflow-y-auto bg-slate-950">
               {currentPrompt}
             </div>
           </div>
+
+          {/* Gemini AI Analysis Results Card */}
+          {aiResult && (
+            <div className="bg-gradient-to-br from-purple-950/40 via-slate-900 to-slate-950 border border-purple-500/30 rounded-2xl p-5 space-y-3 backdrop-blur-xl animate-fadeIn">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-bold text-purple-300 flex items-center gap-2">
+                  <Bot className="w-4 h-4 text-purple-400" />
+                  Gemini AI Architectural Analysis Response
+                </h4>
+                <span className="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-mono border border-purple-500/30">
+                  Gemini 3.5 Flash
+                </span>
+              </div>
+              <div className="font-sans text-xs text-slate-300 leading-relaxed whitespace-pre-wrap bg-slate-950/80 p-4 rounded-xl border border-slate-800 font-mono">
+                {aiResult}
+              </div>
+            </div>
+          )}
+
+          {aiError && (
+            <div className="bg-red-950/30 border border-red-500/30 rounded-2xl p-4 flex items-center gap-3 text-red-300 text-xs">
+              <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />
+              <div>
+                <span className="font-semibold block">Gemini AI Note</span>
+                <span>{aiError}</span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

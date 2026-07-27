@@ -1,16 +1,16 @@
 {
-  "appId": "com.linacre.deasy",
+  "appId": "site.linacre.deasy",
   "productName": "Deasy",
   "copyright": "Copyright © 2026 Linacre site (www.Linacre.site/projects)",
   "directories": {
-    "output": "dist/installers"
+    "output": "release"
   },
   "files": [
     "dist/**/*",
     "desktop-main.cjs",
+    "preload.js",
     "assets/**/*",
-    "package.json",
-    "firebase-applet-config.json"
+    "package.json"
   ],
   "win": {
     "target": [
