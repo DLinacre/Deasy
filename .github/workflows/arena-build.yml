@@ -41,7 +41,7 @@ jobs:
           NODE_ENV: production
 
       - name: Archive Static Build Assets
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: arena-web-dist
           path: dist/
@@ -106,7 +106,7 @@ jobs:
           echo "Package created: release-output/Arena.apk"
 
       - name: Archive Arena.apk Workspace Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Arena-Debug-APK
           path: release-output/Arena.apk
@@ -146,7 +146,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Archive Deasy Installer Workspace Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Deasy-Windows-Installer
           path: dist/installers/Deasy Setup *.exe
