@@ -1,0 +1,6 @@
+[allowlist]
+description = "Allowlist for public Firebase client applet config and dist assets"
+paths = [
+  '''firebase-applet-config\.json''',
+  '''dist/.*''',
+]
