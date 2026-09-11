@@ -1,23 +1,64 @@
 # ==============================================================================
 # Deasy - Windows Runner CI/CD Matrix
+# Runs on local 24/7 Windows Runner (ID: 56201256)
 # ==============================================================================
 
 stages:
-  - test
+  - verify
+  - security
   - build
+  - deploy
 
 default:
   tags:
     - windows
     - powershell
 
+variables:
+  GIT_CLEAN_FLAGS: "none"
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - node_modules/
 
-lint_and_build:
-  stage: test
+typecheck:
+  stage: verify
   script:
-    - npm install
-    - npm run build
+    - pnpm install
+    - pnpm run lint
+
+security_audit:
+  stage: security
+  script:
+    - $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+    - Write-Host "==> Running Gitleaks Secret Detection..."
+    - gitleaks detect --source "." --no-git --redact -v
+    - Write-Host "==> Running Trivy Vulnerability Scan..."
+    - trivy fs --severity HIGH,CRITICAL --exit-code 0 .
+  allow_failure: true
+
+build_app:
+  stage: build
+  dependencies:
+    - typecheck
+  script:
+    - pnpm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 3 days
+
+pages:
+  stage: deploy
+  dependencies:
+    - build_app
+  script:
+    - if (Test-Path public) { Remove-Item -Path public -Recurse -Force }
+    - New-Item -ItemType Directory -Path public -Force | Out-Null
+    - Copy-Item -Path "dist\*" -Destination "public\" -Recurse -Force
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
