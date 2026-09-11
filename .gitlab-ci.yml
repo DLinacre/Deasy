@@ -1,17 +1,23 @@
+# ==============================================================================
+# Deasy - Windows Runner CI/CD Matrix
+# ==============================================================================
+
 stages:
   - test
   - build
 
-variables:
-  NODE_VERSION: "20"
+default:
+  tags:
+    - windows
+    - powershell
 
 cache:
+  key: ${CI_COMMIT_REF_SLUG}
   paths:
     - node_modules/
 
-lint_and_typecheck:
+lint_and_build:
   stage: test
-  image: node:20-alpine
   script:
-    - npm ci || npm install
+    - npm install
     - npm run build
